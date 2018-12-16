@@ -1,5 +1,7 @@
 extends "res://Entities/Characters/Character.gd"
 
+const ANIMATION_TRIGGER_SPEED = 2
+
 var prev_anim : String = ""
 
 enum ANIMATION_TYPE  {IDLE,RUN,CASTING}
@@ -35,7 +37,7 @@ func animate() -> void:
 			prev_anim = ANIMATIONS[ANIMATION_TYPE.CASTING]
 			$MoveAnim.play(prev_anim)
 		return
-	if(linear_vel.length_squared()) > 1:
+	if(linear_vel.length_squared()) > ANIMATION_TRIGGER_SPEED:
 		$body.look_at($body.global_position + linear_vel.normalized())
 		print($body.rotation)
 		if(prev_anim != ANIMATIONS[ANIMATION_TYPE.RUN]):

@@ -55,3 +55,6 @@ func setGlobalPosition(newPos):
 
 func getOrientation():
 	return $body.rotation
+	
+func setOrientation(newOr):
+	$body.rotation = newOr

@@ -13,15 +13,30 @@ var ANIMATIONS = {
 
 var casting : bool = false
 
+puppet var slave_pos = Vector2()
+puppet var slave_rot = 0
+puppet var is_casting = false
+
 func _ready():
+	# Give MP the Player class so it can instance it when a new player connects
+	mp.playerClass = preload("res://Entities/Characters/Player/Player.tscn")
 	add_to_group(Constants.G_PLAYER)
 
 func _physics_process(delta):
-	input()
-	if casting:
-		target_vel = Vector2(0,0)
-	move(delta)
-	animate()
+	# if this player is a remote one, just update from the master info
+	if mp.ready and  not is_network_master():
+		setGlobalPosition(slave_pos)
+		setOrientation(slave_rot)
+	else:
+		input()
+		if casting:
+			target_vel = Vector2(0,0)
+		animate()
+		move(delta)
+		# If this is our player, update remote info about us
+		rset_unreliable("slave_pos", getGlobalPosition())
+		rset_unreliable("slave_rot", getOrientation())
+	
 	
 func input() -> void:
 	target_vel = Vector2(0,0)
@@ -30,6 +45,10 @@ func input() -> void:
 	target_vel.x -= int(Input.is_action_pressed("ui_left"))
 	target_vel.x += int(Input.is_action_pressed("ui_right"))
 	casting = Input.is_action_pressed("ui_casting")
+	if Input.is_key_pressed(KEY_S):
+		mp.create_server(self)
+	if Input.is_key_pressed(KEY_C):
+		mp.connect_to_server(self)
 
 func animate() -> void:
 	if casting:

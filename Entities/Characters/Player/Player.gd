@@ -38,8 +38,8 @@ func _physics_process(delta):
 		animate()
 		move(delta)
 		# If this is our player, update remote info about us
-		rset_unreliable("slave_pos", getGlobalPosition())
-		rset_unreliable("slave_rot", getOrientation())
+		#rset_unreliable("slave_pos", getGlobalPosition())
+		#rset_unreliable("slave_rot", getOrientation())
 	
 	
 func input() -> void:
@@ -50,16 +50,17 @@ func input() -> void:
 	target_vel.x += int(Input.is_action_pressed("ui_right"))
 	casting = Input.is_action_pressed("ui_casting")
 	if Input.is_key_pressed(KEY_S):
-		mp.create_server(self)
+		mp.create_server(self, "Jairo's server")
 	if Input.is_key_pressed(KEY_C):
-		mp.connect_to_server(self)
+		#mp.connect_to_server(self)
+		mp.broker_list()
 
 func animate() -> void:
 	if casting:
 		if(prev_anim != ANIMATIONS[ANIMATION_TYPE.CASTING]):
 			prev_anim = ANIMATIONS[ANIMATION_TYPE.CASTING]
 			$MoveAnim.play(prev_anim)
-			rset_unreliable("animation", prev_anim)
+			#rset_unreliable("animation", prev_anim)
 		return
 	if(linear_vel.length_squared()) > ANIMATION_TRIGGER_SPEED:
 		$body.look_at($body.global_position + linear_vel.normalized())
@@ -71,4 +72,4 @@ func animate() -> void:
 		if(prev_anim != ANIMATIONS[ANIMATION_TYPE.IDLE]):
 			prev_anim = ANIMATIONS[ANIMATION_TYPE.IDLE]
 			$MoveAnim.play(prev_anim)
-	rset_unreliable("animation", prev_anim)
+	#rset_unreliable("animation", prev_anim)

@@ -973,3 +973,5 @@ tile_data = PoolIntArray( -655355, 0, 0, -655354, 0, 1, -655353, 0, 1, -655352, 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( -97.2987, 59.379 )
 
+[node name="Timer" type="Timer" parent="."]
+

@@ -39,7 +39,6 @@ func animate() -> void:
 		return
 	if(linear_vel.length_squared()) > ANIMATION_TRIGGER_SPEED:
 		$body.look_at($body.global_position + linear_vel.normalized())
-		print($body.rotation)
 		if(prev_anim != ANIMATIONS[ANIMATION_TYPE.RUN]):
 			prev_anim = ANIMATIONS[ANIMATION_TYPE.RUN]
 			$MoveAnim.play(prev_anim)

@@ -1,7 +1,7 @@
 extends Node
 
-var port = 10001
-var ip = "127.0.0.1"
+var port = 12345
+var ip = "83.35.97.107"
 var maxPlayers = 4
 var playerClass
 var remotePlayersLocation = "/root/Map"

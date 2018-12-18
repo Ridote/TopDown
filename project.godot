@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Constants="*res://Entities/Autoloads/Constants.gd"
+MP="*res://Entities/Autoloads/Multiplayer.gd"
 
 [debug]
 

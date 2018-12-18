@@ -15,7 +15,8 @@ var casting : bool = false
 
 puppet var slave_pos = Vector2()
 puppet var slave_rot = 0
-puppet var is_casting = false
+puppet var animation = ANIMATIONS[ANIMATION_TYPE.IDLE]
+var slaveAnimationRunning = ""
 
 func _ready():
 	# Give MP the Player class so it can instance it when a new player connects
@@ -27,6 +28,9 @@ func _physics_process(delta):
 	if mp.ready and  not is_network_master():
 		setGlobalPosition(slave_pos)
 		setOrientation(slave_rot)
+		if animation != slaveAnimationRunning:
+			slaveAnimationRunning = animation
+			$MoveAnim.play(animation)
 	else:
 		input()
 		if casting:
@@ -55,6 +59,7 @@ func animate() -> void:
 		if(prev_anim != ANIMATIONS[ANIMATION_TYPE.CASTING]):
 			prev_anim = ANIMATIONS[ANIMATION_TYPE.CASTING]
 			$MoveAnim.play(prev_anim)
+			rset_unreliable("animation", prev_anim)
 		return
 	if(linear_vel.length_squared()) > ANIMATION_TRIGGER_SPEED:
 		$body.look_at($body.global_position + linear_vel.normalized())
@@ -66,3 +71,4 @@ func animate() -> void:
 		if(prev_anim != ANIMATIONS[ANIMATION_TYPE.IDLE]):
 			prev_anim = ANIMATIONS[ANIMATION_TYPE.IDLE]
 			$MoveAnim.play(prev_anim)
+	rset_unreliable("animation", prev_anim)

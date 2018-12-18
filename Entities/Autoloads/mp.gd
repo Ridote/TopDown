@@ -5,7 +5,7 @@ var ip = "127.0.0.1"
 var maxPlayers = 4
 var playerClass
 var remotePlayersLocation = "/root/Map"
-var broker = "http://127.0.0.1:3000"
+var broker = "https://broker.fragment.games"
 
 
 			# # # # # #
@@ -92,16 +92,6 @@ func on_broker_list( result, response_code, headers, body ):
 	print(json.result)
 	list_request_ongoing = false
 	
-func create_ui(text):
-	if not created:
-		created = true
-		var canvas = CanvasLayer.new()
-		var input1 = Label.new()
-		input1.rect_position = Vector2(0,0) # get_viewport().get_size() / 2
-		input1.text = text
-		get_tree().get_root().add_child(canvas)
-		canvas.add_child(input1)
-	
 func connect_to_server(player : Node2D):
 	if not connection_established:
 		connection_established = true
@@ -112,7 +102,6 @@ func connect_to_server(player : Node2D):
 		get_tree().set_network_peer(peer)
 		player.set_network_master(get_tree().get_network_unique_id())
 		player.name = str(get_tree().get_network_unique_id())
-		create_ui("client")
 	
 func create_server(player : Node2D, name):
 	if not server_created:
@@ -129,7 +118,6 @@ func create_server(player : Node2D, name):
 			"name": name,
 			"port": port
 		})
-		create_ui("server")
 
 func _connected_ok():
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id())

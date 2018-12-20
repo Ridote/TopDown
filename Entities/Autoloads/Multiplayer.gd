@@ -2,6 +2,7 @@
 extends Node
 
 signal new_player
+signal broker_list
 
 var port = 10001
 var ip = "127.0.0.1"
@@ -117,8 +118,9 @@ func on_broker_register( result, response_code, headers, body ):
 func on_broker_list( result, response_code, headers, body ):
 	print("on_broker_list")
 	var json = JSON.parse(body.get_string_from_utf8())
-	print(json.result)
+	games = json.result["games"]
 	list_request_ongoing = false
+	emit_signal("broker_list", json.result["games"])
 	
 func connect_to_server(player : Node2D):
 	if not connection_established:

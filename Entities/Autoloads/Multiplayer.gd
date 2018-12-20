@@ -1,6 +1,8 @@
 #warnings-disable
 extends Node
 
+signal new_player
+
 var port = 10001
 var ip = "127.0.0.1"
 var maxPlayers = 4
@@ -18,12 +20,19 @@ var connection_established = false
 var httpClient = null
 var upnpClient = null
 var upnp = null
-var players = []
 var _mapPort_private = 0
+var _players = []
 var list_request_ongoing = false
+var syncableEntities = {}
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
+	get_tree().set_auto_accept_quit(false)	
+	
+func register_type(name, preloadClass):
+	syncableEntities[name] = {
+		preloadClass: preloadClass
+	}
 	
 func mapPort(port):
 	print("mapPort", port)
@@ -58,29 +67,48 @@ func mapPort(port):
 func mapPortTimerOut():
 	mapPort(_mapPort_private)
 	
-func broker_register(data):
-	if not httpClient:
-		httpClient = HTTPRequest.new()
-		add_child(httpClient)
-		httpClient.connect("request_completed", self, "on_broker_register")	
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		if server_created:
+			broker_unregister()
+		else:
+			get_tree().quit()
+	
+func broker_unregister():
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
+	httpClient.connect("request_completed", self, "on_broker_unregister")	
+	var error = httpClient.request(broker + "/unregister", [], true, HTTPClient.METHOD_GET)
+	if error:
+		OS.alert("broker_unregister error: " + str(error))
+	
+func broker_register(data := {}):
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
+	httpClient.connect("request_completed", self, "on_broker_register")	
 	var query = JSON.print(data)
 	var headers = ["Content-Type: application/json"]
 	var error = httpClient.request(broker + "/register", headers, true, HTTPClient.METHOD_POST, query)
 	if error:
-		OS.alert("Error: " + str(error))
+		OS.alert("broker_register error: " + str(error))
 		
 func broker_list():
 	if list_request_ongoing:
 		return
 	list_request_ongoing = true
-	if not httpClient:
-		httpClient = HTTPRequest.new()
-		add_child(httpClient)
-		httpClient.connect("request_completed", self, "on_broker_list")
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
+	httpClient.connect("request_completed", self, "on_broker_list")
 	var error = httpClient.request(broker + "/games", [], true, HTTPClient.METHOD_GET)
 	if error:
-		OS.alert("Error: " + str(error))
-	
+		OS.alert("broker_list error: " + str(error))
+
+func on_broker_unregister( result, response_code, headers, body ):
+	print("on_broker_unregister")
+	var json = JSON.parse(body.get_string_from_utf8())
+	print(json.result)
+	#get_tree().quit()
+
 func on_broker_register( result, response_code, headers, body ):
 	print("on_broker_register")
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -100,8 +128,6 @@ func connect_to_server(player : Node2D):
 		if error:
 			OS.alert("Error: " + str(error))
 		get_tree().set_network_peer(peer)
-		player.set_network_master(get_tree().get_network_unique_id())
-		player.name = str(get_tree().get_network_unique_id())
 	
 func create_server(player : Node2D, name):
 	if not server_created:
@@ -112,28 +138,38 @@ func create_server(player : Node2D, name):
 		if error:
 			OS.alert("Error: " + str(error))
 		get_tree().set_network_peer(peer)
-		players.append(1)
-		player.name = str(1)
 		broker_register({
 			"name": name,
 			"port": port
 		})
 
 func _connected_ok():
+	emit_signal("new_player")
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id())
 	
-remote func user_ready(id):
-	if(get_tree().is_network_server()):
-		rpc("spawn_player", id)
-		for p in players:
-			rpc_id(id, "spawn_player", p)
-		players.append(id)
+func connected_players() -> Array:
+	return _players
+	
+remote func user_ready(id, name):
+	_players.append({
+		id: id,
+		name: name
+	})
+	
+# remote func user_ready(id):
+#	if(get_tree().is_network_server()):
+#		rpc("spawn_player", id)
+#		for p in players:
+#			rpc_id(id, "spawn_player", p)
+#		players.append(id)
 
-sync func spawn_player(networkID : int):
-	if networkID != get_tree().get_network_unique_id():
-		var player = playerClass.instance()
-		player.global_position = Vector2(-200, 10)
-		player.set_network_master(networkID)
-		player.name = str(networkID)
-		get_node(remotePlayersLocation).add_child(player)
-		ready = true
+func spawn_type(type:String, name:String, path:String):
+	_spawn(type, name, path, get_tree().get_network_unique_id())
+	
+sync func _spawn(type:String, name:String, path:String, nid:int):
+	if not type in syncableEntities:
+		OS.alert("Trying to spawn not registered type: " + type)
+	var entity = syncableEntities[type].preloadClass.instance()
+	entity.set_network_master(nid)
+	entity.name = name + str(nid)
+	get_node(path).add_child(entity)

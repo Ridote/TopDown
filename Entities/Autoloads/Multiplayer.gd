@@ -107,18 +107,13 @@ func broker_list():
 func on_broker_unregister( result, response_code, headers, body ):
 	print("on_broker_unregister")
 	var json = JSON.parse(body.get_string_from_utf8())
-	print(json.result)
-	#get_tree().quit()
 
 func on_broker_register( result, response_code, headers, body ):
 	print("on_broker_register")
 	var json = JSON.parse(body.get_string_from_utf8())
-	print(json.result)
 	
 func on_broker_list( result, response_code, headers, body ):
-	print("on_broker_list")
 	var json = JSON.parse(body.get_string_from_utf8())
-	games = json.result["games"]
 	list_request_ongoing = false
 	emit_signal("broker_list", json.result["games"])
 	

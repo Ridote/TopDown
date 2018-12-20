@@ -1,13 +1,9 @@
 extends Control
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	MP.connect_to_server()
-	pass
+	if(MP.connect("broker_list", self, "_on_retrieveFoundGames")):
+		pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -20,8 +16,8 @@ func _on_NewGames_pressed():
 
 func _on_FindGames_pressed():
 	print("Find Games")
-	
-
-func _on_JoinServer():
-	print("Join Server")
 	MP.broker_list()
+
+func _on_retrieveFoundGames(games):
+	for game in games:
+		print(game.name)

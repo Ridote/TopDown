@@ -14,9 +14,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="MenuIni" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 417.0
+margin_left = 160.0
 margin_top = 265.0
-margin_right = 606.0
+margin_right = 349.0
 margin_bottom = 335.0
 size_flags_horizontal = 6
 size_flags_vertical = 4
@@ -33,7 +33,6 @@ margin_bottom = 70.0
 text = "Find Games"
 
 [node name="MenuGames" type="VBoxContainer" parent="HBoxContainer"]
-visible = false
 margin_left = 769.0
 margin_top = 300.0
 margin_right = 769.0

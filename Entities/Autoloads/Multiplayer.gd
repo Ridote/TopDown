@@ -32,7 +32,7 @@ func _ready():
 	
 func register_type(name, preloadClass):
 	syncableEntities[name] = {
-		preloadClass: preloadClass
+		"preloadClass": preloadClass
 	}
 	
 func mapPort(port):
@@ -82,6 +82,7 @@ func broker_unregister():
 	var error = httpClient.request(broker + "/unregister", [], true, HTTPClient.METHOD_GET)
 	if error:
 		OS.alert("broker_unregister error: " + str(error))
+	get_tree().quit()
 	
 func broker_register(data := {}):
 	var httpClient = HTTPRequest.new()
@@ -117,7 +118,7 @@ func on_broker_list( result, response_code, headers, body ):
 	list_request_ongoing = false
 	emit_signal("broker_list", json.result["games"])
 	
-func connect_to_server(player : Node2D):
+func connect_to_server():
 	if not connection_established:
 		connection_established = true
 		var peer = NetworkedMultiplayerENet.new()
@@ -126,7 +127,7 @@ func connect_to_server(player : Node2D):
 			OS.alert("Error: " + str(error))
 		get_tree().set_network_peer(peer)
 	
-func create_server(player : Node2D, name):
+func create_server(name):
 	if not server_created:
 		server_created = true
 		mapPort(port)

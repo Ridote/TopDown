@@ -25,19 +25,25 @@ func _on_retrieveFoundGames(games):
 		button.set_meta("Name", game.name)
 		button.set_meta("IP", game.ip)
 		button.set_meta("Port", game.port)
-		$HBoxContainer/MenuGames.add_child(button)
+		$HBoxContainer/GUITemplate/MenuGames/GamesCentered/Games.add_child(button)
 		button.connect("pressed",self,"_on_serverSelected", [button])
 	
 func _on_serverSelected(button):
 	MP.connect_to_server(button.get_meta("Name"), button.get_meta("IP"), button.get_meta("Port"))
 	
+	
 func showIniMenu():
-	$HBoxContainer/MenuGames.visible = false
-	$HBoxContainer/MenuIni.visible = true
+	$HBoxContainer/GUITemplate/MenuGames.visible = false
+	$HBoxContainer/GUITemplate/MenuIni.visible = true
 
 func showGames():
-	$HBoxContainer/MenuGames.visible = true
-	$HBoxContainer/MenuIni.visible = false
+	$HBoxContainer/GUITemplate/MenuGames.visible = true
+	$HBoxContainer/GUITemplate/MenuIni.visible = false
 
 func _on_newPlayer(player):
 	print(str(player) + " has connected")
+	var players = MP.connected_players()
+	var playersText = $HBoxContainer/GUITemplate/MenuGames/Lobby/PlayersOnLobby
+	playersText = ""
+	for player in players:
+		playersText.text += str(player) + "\n"

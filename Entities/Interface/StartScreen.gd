@@ -13,7 +13,7 @@ func _ready():
 		pass
 	if($StartScreen/HBoxContainer/GUITemplate/NicknameForm/VBoxContainer/HBoxContainer/Exit.connect("pressed", self, "_on_Exit")):
 		pass
-	if($StartScreen/HBoxContainer/GUITemplate/MenuGames/Lobby/StartGame.connect("pressed", self, "_on_StartGame")):
+	if($StartScreen/HBoxContainer/GUITemplate/MenuGames/Lobby/StartGame.connect("pressed", self, "_on_RequestStartGame")):
 		pass
 
 func _on_NewGames_pressed():
@@ -63,6 +63,9 @@ func _on_newPlayer(player):
 	playersText.text = ""
 	for player in players:
 		playersText.text += str(player) + "\n"
+
+func _on_RequestStartGame():
+	rpc("_on_StartGame")
 
 sync func _on_StartGame():
 	$StartScreen.visible = false

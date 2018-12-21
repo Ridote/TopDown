@@ -147,16 +147,14 @@ func create_server(name):
 func _connected_ok():
 	rpc_id(1, "_user_ready", get_tree().get_network_unique_id(), myName)
 	
-remote func _new_player_emit(name):
-	emit_signal("new_player", name)
-	
 func connected_players() -> Array:
 	return _players
 	
 remote func _user_ready(id, name):
 	if(get_tree().is_network_server()):
+		rpc("_user_ready", id, name)
 		for p in _players:
-			rpc("_user_ready", p.id, p.name)
+			rpc_id(id, "_user_ready", p.id, p.name)
 		for i in items:
 			rpc_id(id, "_spawn", i.type, i.name, i.path, i.nid)
 	_players.append({

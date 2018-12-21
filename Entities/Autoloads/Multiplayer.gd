@@ -147,8 +147,11 @@ func create_server(name):
 		})
 
 func _connected_ok():
-	emit_signal("new_player")
 	rpc_id(1, "_user_ready", get_tree().get_network_unique_id(), myName)
+	rpc("_new_player_emit", myName)
+	
+remote func _new_player_emit(name):
+	emit_signal("new_player", name)
 	
 func connected_players() -> Array:
 	return _players

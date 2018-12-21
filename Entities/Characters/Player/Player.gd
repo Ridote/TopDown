@@ -12,16 +12,21 @@ var ANIMATIONS = {
 }
 
 var casting : bool = false
+puppet var slave_position : Vector2 = Vector2(0,0)
 
 func _ready():
 	add_to_group(Constants.G_PLAYER)
 
 func _physics_process(delta):
-	input()
-	if casting:
-		target_vel = Vector2(0,0)
-	move(delta)
-	animate()
+	if(is_network_master()):
+		input()
+		if casting:
+			target_vel = Vector2(0,0)
+		move(delta)
+		animate()
+		rset("slave_position", $body.global_position)
+	else:
+		$body.global_position = slave_position
 	
 func input() -> void:
 	target_vel = Vector2(0,0)

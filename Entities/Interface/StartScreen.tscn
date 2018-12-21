@@ -95,7 +95,6 @@ size_flags_horizontal = 6
 text = "Find Games"
 
 [node name="MenuGames" type="HBoxContainer" parent="HBoxContainer/GUITemplate"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -103,6 +102,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="GamesCentered" type="CenterContainer" parent="HBoxContainer/GUITemplate/MenuGames"]
+editor/display_folded = true
 margin_right = 398.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
@@ -114,7 +114,7 @@ margin_top = 300.0
 margin_right = 199.0
 margin_bottom = 300.0
 
-[node name="Lobby" type="NinePatchRect" parent="HBoxContainer/GUITemplate/MenuGames"]
+[node name="Lobby" type="VBoxContainer" parent="HBoxContainer/GUITemplate/MenuGames"]
 margin_left = 402.0
 margin_right = 800.0
 margin_bottom = 600.0
@@ -122,14 +122,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PlayersOnLobby" type="Label" parent="HBoxContainer/GUITemplate/MenuGames/Lobby"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 40.0
-margin_right = -40.0
-margin_bottom = -40.0
+margin_right = 398.0
+margin_bottom = 563.0
 size_flags_horizontal = 3
+size_flags_vertical = 7
 autowrap = true
 clip_text = true
+
+[node name="StartGame" type="Button" parent="HBoxContainer/GUITemplate/MenuGames/Lobby"]
+margin_top = 567.0
+margin_right = 398.0
+margin_bottom = 600.0
+text = "Start game"
 
 [node name="Label" type="Label" parent="."]
 margin_left = 180.0

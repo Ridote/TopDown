@@ -10,6 +10,9 @@ func _ready():
 		pass
 	if($HBoxContainer/GUITemplate/NicknameForm/VBoxContainer/HBoxContainer/Exit.connect("pressed", self, "_on_Exit")):
 		pass
+	if($HBoxContainer/GUITemplate/MenuGames/Lobby/StartGame.connect("pressed", self, "_on_StartGame")):
+		pass
+
 func _on_NewGames_pressed():
 	MP.create_server(Constants.PLAYER_NICKNAME)
 
@@ -57,3 +60,7 @@ func _on_newPlayer(player):
 	playersText.text = ""
 	for player in players:
 		playersText.text += str(player) + "\n"
+
+sync func _on_StartGame():
+	if(get_tree().change_scene("res://Entities/Maps/TestMap.tscn")):
+		print("ERROR WHEN LOADING SCENE")

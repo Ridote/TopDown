@@ -122,7 +122,7 @@ func on_broker_list( result, response_code, headers, body ):
 	list_request_ongoing = false
 	emit_signal("broker_list", json.result["games"])
 	
-func connect_to_server(_myName: String):
+func connect_to_server(_myName:String, ip:String, port:int):
 	if not connection_established:
 		myName = _myName
 		connection_established = true
@@ -164,6 +164,9 @@ remote func _user_ready(id, name):
 
 func spawn_type(type:String, name:String, path:String):
 	_spawn(type, name, path, get_tree().get_network_unique_id())
+	
+func free_remote():
+	pass
 	
 sync func _spawn(type:String, name:String, path:String, nid:int):
 	if not type in syncableEntities:

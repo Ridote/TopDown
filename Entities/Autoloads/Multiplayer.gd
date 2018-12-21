@@ -25,6 +25,7 @@ var _mapPort_private = 0
 var _players = []
 var list_request_ongoing = false
 var syncableEntities = {}
+var myName = ""
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
@@ -118,8 +119,9 @@ func on_broker_list( result, response_code, headers, body ):
 	list_request_ongoing = false
 	emit_signal("broker_list", json.result["games"])
 	
-func connect_to_server():
+func connect_to_server(_myName: String):
 	if not connection_established:
+		myName = _myName
 		connection_established = true
 		var peer = NetworkedMultiplayerENet.new()
 		var error = peer.create_client(ip, port)
@@ -143,7 +145,7 @@ func create_server(name):
 
 func _connected_ok():
 	emit_signal("new_player")
-	rpc_id(1, "user_ready", get_tree().get_network_unique_id())
+	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), myName)
 	
 func connected_players() -> Array:
 	return _players

@@ -4,12 +4,9 @@ extends Node
 signal new_player
 signal broker_list
 
-var port = 10001
-var ip = "127.0.0.1"
 var maxPlayers = 4
-var playerClass
-var remotePlayersLocation = "/root/Map"
 var broker = "https://broker.fragment.games"
+var port = 12345
 
 			# # # # # #
 #	#	#	# PRIVATE #		#	#	#
@@ -26,6 +23,7 @@ var _players = []
 var list_request_ongoing = false
 var syncableEntities = {}
 var myName = ""
+var httpclient = null
 
 # All synced items
 var items = []
@@ -80,8 +78,9 @@ func _notification(what):
 			get_tree().quit()
 	
 func broker_unregister():
-	var httpClient = HTTPRequest.new()
-	add_child(httpClient)
+	if not httpclient:
+		httpClient = HTTPRequest.new()
+		add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_unregister")	
 	var error = httpClient.request(broker + "/unregister", [], true, HTTPClient.METHOD_GET)
 	if error:
@@ -89,8 +88,9 @@ func broker_unregister():
 	get_tree().quit()
 	
 func broker_register(data := {}):
-	var httpClient = HTTPRequest.new()
-	add_child(httpClient)
+	if not httpclient:
+		httpClient = HTTPRequest.new()
+		add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_register")	
 	var query = JSON.print(data)
 	var headers = ["Content-Type: application/json"]
@@ -102,8 +102,9 @@ func broker_list():
 	if list_request_ongoing:
 		return
 	list_request_ongoing = true
-	var httpClient = HTTPRequest.new()
-	add_child(httpClient)
+	if not httpclient:
+		httpClient = HTTPRequest.new()
+		add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_list")
 	var error = httpClient.request(broker + "/games", [], true, HTTPClient.METHOD_GET)
 	if error:
@@ -148,7 +149,6 @@ func create_server(name):
 
 func _connected_ok():
 	rpc_id(1, "_user_ready", get_tree().get_network_unique_id(), myName)
-	rpc("_new_player_emit", myName)
 	
 remote func _new_player_emit(name):
 	emit_signal("new_player", name)
@@ -157,13 +157,16 @@ func connected_players() -> Array:
 	return _players
 	
 remote func _user_ready(id, name):
+	if(get_tree().is_network_server()):
+		for p in _players:
+			rpc("_user_ready", p.id, p.name)
+		for i in items:
+			rpc_id(id, "_spawn", i.type, i.name, i.path, i.nid)
 	_players.append({
 		"id": id,
 		"name": name
 	})
-	if(get_tree().is_network_server()):
-		for i in items:
-			rpc_id(id, "_spawn", i.type, i.name, i.path, i.nid)
+	emit_signal("new_player", name)
 
 func spawn_type(type:String, name:String, path:String):
 	_spawn(type, name, path, get_tree().get_network_unique_id())

@@ -164,7 +164,7 @@ remote func _user_ready(id, name):
 	emit_signal("new_player", name)
 
 func spawn_type(type:String, name:String, path:String):
-	_spawn(type, name, path, get_tree().get_network_unique_id())
+	rpc("_spawn", type, name, path, get_tree().get_network_unique_id())
 	
 func free_remote():
 	pass

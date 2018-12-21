@@ -1,4 +1,4 @@
 extends Node2D
 
 func _ready():
-	MP.spawn_type("Player","Frederiko", "/root/Map")
+	MP.spawn_type("Player", Constants.PLAYER_NICKNAME, "/root/Map")

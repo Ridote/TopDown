@@ -23,7 +23,7 @@ var _players = []
 var list_request_ongoing = false
 var syncableEntities = {}
 var myName = ""
-var httpclient = null
+
 
 # All synced items
 var items = []
@@ -73,24 +73,21 @@ func mapPortTimerOut():
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		if server_created:
-			broker_unregister()
+			call_deferred("broker_unregister")
 		else:
 			get_tree().quit()
 	
 func broker_unregister():
-	if not httpclient:
-		httpClient = HTTPRequest.new()
-		add_child(httpClient)
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_unregister")	
-	var error = httpClient.request(broker + "/unregister", [], true, HTTPClient.METHOD_GET)
+	var error = httpClient.request(broker + "/games", [], true, HTTPClient.METHOD_GET)
 	if error:
 		OS.alert("broker_unregister error: " + str(error))
-	get_tree().quit()
 	
 func broker_register(data := {}):
-	if not httpclient:
-		httpClient = HTTPRequest.new()
-		add_child(httpClient)
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_register")	
 	var query = JSON.print(data)
 	var headers = ["Content-Type: application/json"]
@@ -102,9 +99,8 @@ func broker_list():
 	if list_request_ongoing:
 		return
 	list_request_ongoing = true
-	if not httpclient:
-		httpClient = HTTPRequest.new()
-		add_child(httpClient)
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_list")
 	var error = httpClient.request(broker + "/games", [], true, HTTPClient.METHOD_GET)
 	if error:
@@ -113,6 +109,7 @@ func broker_list():
 func on_broker_unregister( result, response_code, headers, body ):
 	print("on_broker_unregister")
 	var json = JSON.parse(body.get_string_from_utf8())
+	get_tree().quit()
 
 func on_broker_register( result, response_code, headers, body ):
 	print("on_broker_register")

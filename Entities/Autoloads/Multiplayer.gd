@@ -27,6 +27,9 @@ var list_request_ongoing = false
 var syncableEntities = {}
 var myName = ""
 
+# All synced items
+var items = []
+
 func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().set_auto_accept_quit(false)	
@@ -145,23 +148,19 @@ func create_server(name):
 
 func _connected_ok():
 	emit_signal("new_player")
-	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), myName)
+	rpc_id(1, "_user_ready", get_tree().get_network_unique_id(), myName)
 	
 func connected_players() -> Array:
 	return _players
 	
-remote func user_ready(id, name):
+remote func _user_ready(id, name):
 	_players.append({
-		id: id,
-		name: name
+		"id": id,
+		"name": name
 	})
-	
-# remote func user_ready(id):
-#	if(get_tree().is_network_server()):
-#		rpc("spawn_player", id)
-#		for p in players:
-#			rpc_id(id, "spawn_player", p)
-#		players.append(id)
+	if(get_tree().is_network_server()):
+		for i in items:
+			rpc_id(id, "_spawn", i.type, i.name, i.path, i.nid)
 
 func spawn_type(type:String, name:String, path:String):
 	_spawn(type, name, path, get_tree().get_network_unique_id())
@@ -173,3 +172,10 @@ sync func _spawn(type:String, name:String, path:String, nid:int):
 	entity.set_network_master(nid)
 	entity.name = name + str(nid)
 	get_node(path).add_child(entity)
+	if(get_tree().is_network_server()):
+		items.append({
+			"type": type,
+			"name": name,
+			"path": path,
+			"nid": nid
+		})

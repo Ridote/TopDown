@@ -1,7 +1,10 @@
 extends Control
 
+const playerFactory = preload("res://Entities/Characters/Player/Player.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	MP.register_type("Player", playerFactory)
 	if(MP.connect("broker_list", self, "_on_retrieveFoundGames")):
 		pass
 	if(MP.connect("new_player", self, "_on_newPlayer")):

@@ -68,7 +68,6 @@ func _on_RequestStartGame():
 	rpc("_on_StartGame")
 
 sync func _on_StartGame():
-	$StartScreen.visible = false
 	$Map.spawn()
 	$Map.visible = true
 	$StartScreen.queue_free()

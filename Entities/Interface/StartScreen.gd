@@ -13,11 +13,12 @@ func _ready():
 		pass
 	if($StartScreen/HBoxContainer/GUITemplate/NicknameForm/VBoxContainer/HBoxContainer/Exit.connect("pressed", self, "_on_Exit")):
 		pass
-	if($StartScreen/HBoxContainer/GUITemplate/MenuGames/Lobby/StartGame.connect("pressed", self, "_on_RequestStartGame")):
+	if($StartScreen/HBoxContainer/GUITemplate/Lobby/StartGame.connect("pressed", self, "_on_RequestStartGame")):
 		pass
 
 func _on_NewGames_pressed():
 	MP.create_server(Constants.PLAYER_NICKNAME)
+	showLobby()
 
 func _on_FindGames_pressed():
 	print("Find Games")
@@ -38,8 +39,20 @@ func _on_retrieveFoundGames(games):
 		button.connect("pressed",self,"_on_serverSelected", [button])
 	
 func _on_serverSelected(button):
-	MP.connect_to_server(button.get_meta("Name"), button.get_meta("IP"), button.get_meta("Port"))
+	#List players on the game
+	$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame/PlayersList.text = "List of players here"
+	var joinServerButton = Button.new()
+	joinServerButton.set_meta("Name", button.get_meta("Name"))
+	joinServerButton.set_meta("IP", button.get_meta("IP"))
+	joinServerButton.set_meta("Port", button.get_meta("Port"))
+	joinServerButton.connect("pressed", self, "_on_joinServer", [joinServerButton])
+	joinServerButton.text = "Join Server"
+	$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame.add_child(joinServerButton)
 	
+func _on_joinServer(button):
+	MP.connect_to_server(button.get_meta("Name"), button.get_meta("IP"), button.get_meta("Port"))
+	showLobby()
+
 func _on_SubmitNickname():
 	Constants.PLAYER_NICKNAME = $StartScreen/HBoxContainer/GUITemplate/NicknameForm/VBoxContainer/Nickname.text
 	$StartScreen/HBoxContainer/GUITemplate/NicknameForm.visible = false
@@ -47,14 +60,6 @@ func _on_SubmitNickname():
 	
 func _on_Exit():
 	get_tree().quit()
-	
-func showIniMenu():
-	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = false
-	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = true
-
-func showGames():
-	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = true
-	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = false
 
 func _on_newPlayer(player):
 	print(str(player) + " has connected")
@@ -71,3 +76,18 @@ sync func _on_StartGame():
 	$Map.spawn()
 	$Map.visible = true
 	$StartScreen.queue_free()
+	
+func showIniMenu():
+	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = false
+	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = true
+	$StartScreen/HBoxContainer/GUITemplate/Lobby.visible  = false
+
+func showGames():
+	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = true
+	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = false
+	$StartScreen/HBoxContainer/GUITemplate/Lobby.visible  = false
+
+func showLobby():
+	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = false
+	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = false
+	$StartScreen/HBoxContainer/GUITemplate/Lobby.visible  = true

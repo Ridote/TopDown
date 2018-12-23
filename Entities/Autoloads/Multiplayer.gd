@@ -81,7 +81,7 @@ func broker_unregister():
 	var httpClient = HTTPRequest.new()
 	add_child(httpClient)
 	httpClient.connect("request_completed", self, "on_broker_unregister")	
-	var error = httpClient.request(broker + "/games", [], true, HTTPClient.METHOD_GET)
+	var error = httpClient.request(broker + "/unregister", [], true, HTTPClient.METHOD_GET)
 	if error:
 		OS.alert("broker_unregister error: " + str(error))
 	
@@ -107,13 +107,13 @@ func broker_list():
 		OS.alert("broker_list error: " + str(error))
 
 func on_broker_unregister( result, response_code, headers, body ):
-	print("on_broker_unregister")
 	var json = JSON.parse(body.get_string_from_utf8())
+	print("on_broker_unregister", json.result)
 	get_tree().quit()
 
 func on_broker_register( result, response_code, headers, body ):
-	print("on_broker_register")
 	var json = JSON.parse(body.get_string_from_utf8())
+	print("on_broker_register", json.result)
 	
 func on_broker_list( result, response_code, headers, body ):
 	var json = JSON.parse(body.get_string_from_utf8())

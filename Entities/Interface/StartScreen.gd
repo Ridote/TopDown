@@ -88,6 +88,8 @@ func showGames():
 	$StartScreen/HBoxContainer/GUITemplate/Lobby.visible  = false
 
 func showLobby():
+	if(!is_network_master()):
+		$StartScreen/HBoxContainer/GUITemplate/Lobby/StartGame.visible = false
 	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = false
 	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = false
 	$StartScreen/HBoxContainer/GUITemplate/Lobby.visible  = true

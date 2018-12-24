@@ -69,7 +69,7 @@ func _on_Exit():
 
 func _on_newPlayer(player):
 	var playersText = $StartScreen/HBoxContainer/GUITemplate/Lobby/PlayersOnLobby
-	playersText.text += str(player.name) + "\n"
+	playersText.text += str(player) + "\n"
 
 func _on_RequestStartGame():
 	rpc("_on_StartGame")

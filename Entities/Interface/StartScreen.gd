@@ -68,11 +68,8 @@ func _on_Exit():
 	get_tree().quit()
 
 func _on_newPlayer(player):
-	print(str(player) + " has connected")
-	var players = MP.connected_players()
 	var playersText = $StartScreen/HBoxContainer/GUITemplate/Lobby/PlayersOnLobby
-	for player in players:
-		playersText.text += str(player.name) + "\n"
+	playersText.text += str(player.name) + "\n"
 
 func _on_RequestStartGame():
 	rpc("_on_StartGame")

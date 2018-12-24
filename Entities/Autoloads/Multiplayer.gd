@@ -4,13 +4,46 @@ extends Node
 signal new_player
 signal broker_list
 
+
+		# # # # # # # # #
+		# CONFIGURATION #
+		# # # # # # # # #
+# # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # #
 var maxPlayers = 4
 var broker = "https://broker.fragment.games"
 var port = 12345
+# # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # #
 
-			# # # # # #
-#	#	#	# PRIVATE #		#	#	#
-			# # # # # #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # #
+		# # # # # #
+		# PRIVATE #
+		# # # # # #
 var created = false
 var ready = false
 var server_created = false
@@ -38,16 +71,13 @@ func register_type(name, preloadClass):
 	}
 	
 func mapPort(port):
-	print("mapPort", port)
 	if not upnp:
 		upnp = UPNP.new()
 	var err = upnp.discover()
 	if err != UPNP.UPNP_RESULT_SUCCESS and err != UPNP.UPNP_RESULT_NO_DEVICES:
 			OS.alert("Could not find your router, error: " + str(err))
 	upnpClient = upnp.get_gateway()
-	print("upnpClient:", upnpClient)
 	if upnpClient:
-		print("Binding")
 		var resUDP = upnpClient.add_port_mapping( port, port, "Godot MP", "UDP")
 		var resTCP = upnpClient.add_port_mapping( port, port, "Godot MP", "TCP")
 		if resUDP != 0:
@@ -65,7 +95,6 @@ func mapPort(port):
 		timer.connect("timeout", self, "mapPortTimerOut")
 		timer.one_shot = true
 		timer.start()
-		print("mapPort Timer started")
 		
 func mapPortTimerOut():
 	mapPort(_mapPort_private)
@@ -166,8 +195,8 @@ remote func _user_ready(id, name):
 func spawn_type(type:String, name:String, path:String):
 	rpc("_spawn", type, name, path, get_tree().get_network_unique_id())
 	
-func free_remote():
-	pass
+sync func delete(n:Node):
+	n.queue_free()
 	
 sync func _spawn(type:String, name:String, path:String, nid:int):
 	if not type in syncableEntities:

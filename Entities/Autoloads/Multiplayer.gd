@@ -184,7 +184,11 @@ func create_server(name):
 		get_tree().set_network_peer(peer)
 		broker_register({
 			"name": name,
-			"port": port
+			"port": port,
+			"players": [{
+				"id": 1,
+				"name": name
+			}]
 		})
 
 func _connected_ok():

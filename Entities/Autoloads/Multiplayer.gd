@@ -114,6 +114,16 @@ func broker_unregister():
 	if error:
 		OS.alert("broker_unregister error: " + str(error))
 	
+func broker_update(data):
+	var httpClient = HTTPRequest.new()
+	add_child(httpClient)
+	httpClient.connect("request_completed", self, "on_broker_update")	
+	var query = JSON.print(data)
+	var headers = ["Content-Type: application/json"]
+	var error = httpClient.request(broker + "/update", headers, true, HTTPClient.METHOD_POST, query)
+	if error:
+		OS.alert("broker_register error: " + str(error))
+	
 func broker_register(data := {}):
 	var httpClient = HTTPRequest.new()
 	add_child(httpClient)
@@ -143,6 +153,10 @@ func on_broker_unregister( result, response_code, headers, body ):
 func on_broker_register( result, response_code, headers, body ):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print("on_broker_register", json.result)
+	
+func on_broker_update( result, response_code, headers, body ):
+	var json = JSON.parse(body.get_string_from_utf8())
+	print("on_broker_update", json.result)
 	
 func on_broker_list( result, response_code, headers, body ):
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -191,6 +205,10 @@ remote func _user_ready(id, name):
 		"name": name
 	})
 	emit_signal("new_player", name)
+	if(get_tree().is_network_server()):
+		broker_update({
+			"players": _players
+		})
 
 func spawn_type(type:String, name:String, path:String):
 	rpc("_spawn", type, name, path, get_tree().get_network_unique_id())

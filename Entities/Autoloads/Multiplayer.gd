@@ -200,8 +200,8 @@ func connected_players() -> Array:
 remote func _user_ready(id, name):
 	if(get_tree().is_network_server()):
 		rpc("_user_ready", id, name)
-		for p in _players:
-			rpc_id(id, "_user_ready", p.id, p.name)
+		#for p in _players:
+		#	rpc_id(id, "_user_ready", p.id, p.name)
 		for i in items:
 			rpc_id(id, "_spawn", i.type, i.name, i.path, i.nid)
 	_players.append({

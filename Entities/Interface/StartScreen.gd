@@ -35,22 +35,28 @@ func _on_retrieveFoundGames(games):
 		button.set_meta("Name", game.name)
 		button.set_meta("IP", game.ip)
 		button.set_meta("Port", game.port)
+		button.set_meta("Players", game.players)
 		$StartScreen/HBoxContainer/GUITemplate/MenuGames/GamesCentered/Games.add_child(button)
 		button.connect("pressed",self,"_on_serverSelected", [button])
 	
 func _on_serverSelected(button):
 	#List players on the game
-	$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame/PlayersList.text = "List of players here"
+	$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame/PlayersList.text = "Players\n"
+	for player in button.get_meta("Players"):
+		$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame/PlayersList.text += player.name + "\n"
 	var joinServerButton = Button.new()
 	joinServerButton.set_meta("Name", button.get_meta("Name"))
 	joinServerButton.set_meta("IP", button.get_meta("IP"))
 	joinServerButton.set_meta("Port", button.get_meta("Port"))
+	joinServerButton.set_meta("Players", button.get_meta("Players"))
 	joinServerButton.connect("pressed", self, "_on_joinServer", [joinServerButton])
 	joinServerButton.text = "Join Server"
 	$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame.add_child(joinServerButton)
-	
+
 func _on_joinServer(button):
 	MP.connect_to_server(Constants.PLAYER_NICKNAME, button.get_meta("IP"), button.get_meta("Port"))
+	for player in button.get_meta("Players"):
+		$StartScreen/HBoxContainer/GUITemplate/Lobby/PlayersOnLobby.text += player.name + "\n"
 	showLobby()
 
 func _on_SubmitNickname():
@@ -65,9 +71,8 @@ func _on_newPlayer(player):
 	print(str(player) + " has connected")
 	var players = MP.connected_players()
 	var playersText = $StartScreen/HBoxContainer/GUITemplate/Lobby/PlayersOnLobby
-	playersText.text = ""
 	for player in players:
-		playersText.text += str(player) + "\n"
+		playersText.text += str(player.name) + "\n"
 
 func _on_RequestStartGame():
 	rpc("_on_StartGame")

@@ -64,7 +64,7 @@ func _on_Exit():
 func _on_newPlayer(player):
 	print(str(player) + " has connected")
 	var players = MP.connected_players()
-	var playersText = $StartScreen/HBoxContainer/GUITemplate/MenuGames/Lobby/PlayersOnLobby
+	var playersText = $StartScreen/HBoxContainer/GUITemplate/Lobby/PlayersOnLobby
 	playersText.text = ""
 	for player in players:
 		playersText.text += str(player) + "\n"

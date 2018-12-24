@@ -50,7 +50,7 @@ func _on_serverSelected(button):
 	$StartScreen/HBoxContainer/GUITemplate/MenuGames/PlayersOnGame.add_child(joinServerButton)
 	
 func _on_joinServer(button):
-	MP.connect_to_server(button.get_meta("Name"), button.get_meta("IP"), button.get_meta("Port"))
+	MP.connect_to_server(Constants.PLAYER_NICKNAME, button.get_meta("IP"), button.get_meta("Port"))
 	showLobby()
 
 func _on_SubmitNickname():
@@ -88,7 +88,7 @@ func showGames():
 	$StartScreen/HBoxContainer/GUITemplate/Lobby.visible  = false
 
 func showLobby():
-	if(!is_network_master()):
+	if(!get_tree().is_network_server()):
 		$StartScreen/HBoxContainer/GUITemplate/Lobby/StartGame.visible = false
 	$StartScreen/HBoxContainer/GUITemplate/MenuGames.visible = false
 	$StartScreen/HBoxContainer/GUITemplate/MenuIni.visible = false

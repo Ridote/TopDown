@@ -59,9 +59,6 @@ tracks/0/keys = {
 [node name="Player" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
-[node name="body" parent="." index="0"]
-collision_mask = 6
-
 [node name="Sprite" type="Sprite" parent="body" index="1"]
 position = Vector2( 1, -1 )
 texture = ExtResource( 3 )
@@ -71,6 +68,9 @@ frame = 6
 [node name="Camera2D" type="Camera2D" parent="body" index="2"]
 current = true
 zoom = Vector2( 0.5, 0.5 )
+
+[node name="SkillTarget" type="Position2D" parent="body" index="3"]
+position = Vector2( 51.6745, 0 )
 
 [node name="MoveAnim" type="AnimationPlayer" parent="." index="1"]
 autoplay = "Idle"

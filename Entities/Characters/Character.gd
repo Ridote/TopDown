@@ -49,9 +49,13 @@ func receiveDmg(_fis : float, _mag : float, _source : Object, impulse : float = 
 ################################################ Position
 func getGlobalPosition():
 	return $body.global_position
+	
+func character_add_child(something:Node2D):
+	add_child(something)
 
 func setGlobalPosition(newPos):
 	$body.global_position = newPos
 
 func getOrientation():
 	return $body.rotation
+	

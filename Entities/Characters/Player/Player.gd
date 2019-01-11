@@ -41,6 +41,19 @@ func input() -> void:
 	target_vel.x -= int(Input.is_action_pressed("ui_left"))
 	target_vel.x += int(Input.is_action_pressed("ui_right"))
 	casting = Input.is_action_pressed("ui_casting")
+	if casting:
+		attack()
+	
+var attacking = false
+func attack():
+	if not attacking:
+		attacking = true
+		var fireball = preload("res://Entities/Skills/Fireball.tscn").instance()
+		character_add_child(fireball)
+		fireball.init($body/SkillTarget.global_position, $body.global_position)
+		yield(get_tree().create_timer(0.3), "timeout")
+		attacking = false
+
 
 func animate() -> void:
 	if casting:

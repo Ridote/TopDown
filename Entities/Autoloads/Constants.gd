@@ -7,10 +7,32 @@ const G_PLAYER = "Player"
 
 var PLAYER_NICKNAME : String = "Placeholder"
 
-#var skills = [
-#	{
-#		name: "Fireball",
-#		texture: {x:256,y:0},
-#		description: "This is a totally fair description of my skill. PUMPUM fire fire and everything goes to poo poo"
-#	}
-#]
+#
+# %dmg: damage
+# %cd: reuse
+# %cost: cost
+#
+
+var skills = [
+	{
+		"name": "Fireball",
+		"texture": Vector2(256,0),
+		"description": "Throws a fireball that deals %dmg of damage to a single target.\nReuse: %cd",
+		"dmg": [12,15,20],
+		"cd": [10, 9.5, 9, 8.5, 8, 6],
+		"cost": [40,80,90],
+		"level":0,
+		"maxLevel":2
+	},
+	{
+		"name": "The faggeniser",
+		"texture": Vector2(0,0),
+		"description": "The faggeniser makes you a faggen and a noob instantly dealing %dmg.\nReuse: %cd",
+		"dmg": [5,7,9,12,15,25],
+		"cd": [10, 9.5, 9, 8.5, 8, 6],
+		"cost": [20,30,40,50,60,80],
+		"level":0,
+		"maxLevel":5
+	}
+	
+]

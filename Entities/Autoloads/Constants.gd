@@ -12,7 +12,12 @@ var PLAYER_NICKNAME : String = "Placeholder"
 # %cd: reuse
 # %cost: cost
 #
-
+#BBCode
+var BBCodeColours = {
+	"dmg": "#FF0000",
+	"cd": "#FF00FF",
+	"cost": "#FFFF0"
+}
 var skills = [
 	{
 		"name": "Fireball",
@@ -36,3 +41,13 @@ var skills = [
 	}
 	
 ]
+
+func formatTextSkill(skill) -> String:
+	var newText = skill.description
+	var tag = "dmg"
+	newText = newText.replace("%"+tag, "[color=" + BBCodeColours[tag] + "]" + str(skill[tag][skill["level"]]) + "[/color]")
+	tag = "cd"
+	newText = newText.replace("%"+tag, "[color=" + BBCodeColours[tag] + "]" + str(skill[tag][skill["level"]]) + "[/color]")
+	tag = "cost"
+	newText = newText.replace("%"+tag, "[color=" + BBCodeColours[tag] + "]" + str(skill[tag][skill["level"]]) + "[/color]")
+	return newText

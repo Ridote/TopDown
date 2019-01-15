@@ -17,7 +17,8 @@ func _ready():
 	buyButton = $SkillInfo/Info/Buy
 	descriptionLabel = $SkillInfo/DescriptionContainer/SkillDescription
 	level = $SkillInfo/Info/VBoxContainer/VBoxContainer2/Level
-
+	descriptionLabel.bbcode_enabled = true
+	
 func init(skill_id: int) -> void:
 	var skill = Constants.skills[skill_id]
 	id = skill_id
@@ -35,5 +36,8 @@ func _on_Buy_pressed() -> void:
 			buyButton.disabled = true
 
 func updateSkill(skill) -> void:
-	descriptionLabel.text = skill.description.replace("%dmg", skill.dmg[skill.level]).replace("%cd", skill.cd[skill.level]).replace("%cost", skill.cost[skill.level])
+	descriptionLabel.bbcode_text = (Constants.formatTextSkill(skill))
+	print(descriptionLabel.bbcode_text)
+	
 	level.text = "Level: " + str(skill.level) + "/" + str(skill.maxLevel)
+	

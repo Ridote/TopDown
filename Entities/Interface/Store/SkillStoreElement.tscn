@@ -90,11 +90,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="SkillDescription" type="Label" parent="SkillInfo/DescriptionContainer"]
+[node name="SkillDescription" type="RichTextLabel" parent="SkillInfo/DescriptionContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
-text = "This is a description of the skill. This might be a line or a few lines or whatever you bitch. Haha you are a noob."
-autowrap = true
+bbcode_enabled = true
 
 [connection signal="pressed" from="SkillInfo/Info/Buy" to="." method="_on_Buy_pressed"]

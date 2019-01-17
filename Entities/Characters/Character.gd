@@ -50,9 +50,6 @@ func receiveDmg(_fis : float, _mag : float, _source : Object, impulse : float = 
 func getGlobalPosition():
 	return $body.global_position
 	
-func character_add_child(something:Node2D):
-	add_child(something)
-
 func setGlobalPosition(newPos):
 	$body.global_position = newPos
 

@@ -15,8 +15,7 @@ func _ready() -> void:
 		registerSkill(skill.name, skill.factory)
 
 func spawnSkill(skill_name: String, root:String = "/root/"):
-	#return MP.spawn_type(skill_name, skill_name, root)
-	pass
+	return MP.spawn_type(skill_name, skill_name, root)
 
 #BBCode
 var BBCodeColours = {
@@ -35,7 +34,7 @@ var skills = [
 		"cost": [40,80,90],
 		"level":0,
 		"maxLevel":2,
-		"factory":preload("res://Entities/Skills/Skill.tscn")
+		"factory":preload("res://Entities/Skills/Fireball.tscn")
 	},
 	{
 		"name": "The faggeniser",

@@ -214,13 +214,14 @@ remote func _user_ready(id, name):
 			"players": _players
 		})
 
-func spawn_type(type:String, name:String, path:String):
+func spawn_type(type:String, name:String, path:String) -> Node:
 	rpc("_spawn", type, name, path, get_tree().get_network_unique_id())
+	return _spawn(type, name, path, get_tree().get_network_unique_id())
 	
 sync func delete(n:Node):
 	n.queue_free()
 	
-sync func _spawn(type:String, name:String, path:String, nid:int):
+remote func _spawn(type:String, name:String, path:String, nid:int) -> Node:
 	if not type in syncableEntities:
 		OS.alert("Trying to spawn not registered type: " + type)
 	var entity = syncableEntities[type].preloadClass.instance()
@@ -234,3 +235,4 @@ sync func _spawn(type:String, name:String, path:String, nid:int):
 			"path": path,
 			"nid": nid
 		})
+	return entity

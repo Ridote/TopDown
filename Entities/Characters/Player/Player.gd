@@ -19,6 +19,7 @@ puppet var slave_anim : String = ""
 func _ready():
 	if(is_network_master()):
 		add_to_group(Constants.G_PLAYER)
+		$body/Camera2D.current = true
 	else:
 		add_to_group(Constants.G_ENEMY)
 

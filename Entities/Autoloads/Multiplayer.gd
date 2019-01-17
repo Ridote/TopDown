@@ -176,7 +176,7 @@ func connect_to_server(_myName:String, ip:String, port:int):
 func create_server(name):
 	if not server_created:
 		server_created = true
-		#mapPort(port)
+		mapPort(port)
 		var peer = NetworkedMultiplayerENet.new()
 		var error = peer.create_server(port, maxPlayers)
 		if error:
@@ -200,8 +200,8 @@ func connected_players() -> Array:
 remote func _user_ready(id, name):
 	if(get_tree().is_network_server()):
 		rpc("_user_ready", id, name)
-		#for p in _players:
-		#	rpc_id(id, "_user_ready", p.id, p.name)
+		for p in _players:
+			rpc_id(id, "_user_ready", p.id, p.name)
 		for i in items:
 			rpc_id(id, "_spawn", i.type, i.name, i.path, i.nid)
 	_players.append({

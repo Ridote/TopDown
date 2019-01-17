@@ -19,5 +19,8 @@ func init(targetPoint=null, position=null):
 func _process(delta):
 	var collision = move_and_collide(speed * delta)
 	if collision and collision.collider.has_method("hit"):
-		collision.collider.hit(damage)
+		var collider = collision.collider
+		var parent = get_parent()
+		if not collider is parent and collider.is_in_group(Constants.G_PLAYER):
+			collision.collider.hit(damage)
 		queue_free()

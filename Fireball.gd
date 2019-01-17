@@ -36,7 +36,7 @@ func _process(delta):
 				var collider = collision.collider
 				if collider.is_in_group(Constants.G_ENEMY):
 					collision.collider.hit(damage)
-			queue_free()
+			MP.delete(self)
 	else:
 		global_position = slave_pos
 		rotation = slave_rot

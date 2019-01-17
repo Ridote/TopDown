@@ -23,11 +23,20 @@ func init(targetPoint=null, position=null):
 	rotation = direction
 	$AnimationPlayer.play("fire")
 
+puppet var slave_pos = Vector2()
+puppet var slave_rot = Vector2()
+
 func _process(delta):
-	var collision = move_and_collide(speed * delta)
-	if collision:
-		if collision.collider.has_method("hit"):
-			var collider = collision.collider
-			if collider.is_in_group(Constants.G_ENEMY):
-				collision.collider.hit(damage)
-		queue_free()
+	if is_network_master():
+		rset("slave_pos", global_position)
+		rset("slave_rot", rotation)
+		var collision = move_and_collide(speed * delta)
+		if collision:
+			if collision.collider.has_method("hit"):
+				var collider = collision.collider
+				if collider.is_in_group(Constants.G_ENEMY):
+					collision.collider.hit(damage)
+			queue_free()
+	else:
+		global_position = slave_pos
+		rotation = slave_rot

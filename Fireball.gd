@@ -24,7 +24,7 @@ func init(targetPoint=null, position=null):
 	$AnimationPlayer.play("fire")
 
 puppet var slave_pos = Vector2()
-puppet var slave_rot = Vector2()
+puppet var slave_rot = 0.0
 
 func _process(delta):
 	if is_network_master():

@@ -9,7 +9,6 @@
 script = ExtResource( 1 )
 
 [node name="StartScreen" type="CanvasLayer" parent="."]
-editor/display_folded = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StartScreen"]
 anchor_right = 1.0

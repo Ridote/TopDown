@@ -11,7 +11,7 @@ func _ready():
 	
 func init():
 	var row = false
-	for id in Constants.skills.size():
+	for id in SkillManager.skills.size():
 		var skillGUIElement = skillElementFactory.instance()
 		if row:
 			row=false

@@ -2,7 +2,14 @@ extends KinematicBody2D
 
 var speed = Vector2(200.0, 0)
 var damage = 100
-	
+
+func _ready():
+	add_to_group(Constants.G_SKILL)
+	if(is_network_master()):
+		collision_layer = 4
+	else:
+		collision_layer = 16
+
 func init(targetPoint=null, position=null):
 	var direction
 	print("position", position)
@@ -18,9 +25,9 @@ func init(targetPoint=null, position=null):
 
 func _process(delta):
 	var collision = move_and_collide(speed * delta)
-	if collision and collision.collider.has_method("hit"):
-		var collider = collision.collider
-		var parent = get_parent()
-		if not collider is parent and collider.is_in_group(Constants.G_PLAYER):
-			collision.collider.hit(damage)
+	if collision:
+		if collision.collider.has_method("hit"):
+			var collider = collision.collider
+			if collider.is_in_group(Constants.G_ENEMY):
+				collision.collider.hit(damage)
 		queue_free()

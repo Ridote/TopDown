@@ -17,7 +17,10 @@ puppet var slave_rotation : float = 0.0
 puppet var slave_anim : String = ""
 
 func _ready():
-	add_to_group(Constants.G_PLAYER)
+	if(is_network_master()):
+		add_to_group(Constants.G_PLAYER)
+	else:
+		add_to_group(Constants.G_ENEMY)
 
 func _physics_process(delta):
 	if(is_network_master()):

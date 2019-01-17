@@ -20,7 +20,7 @@ func _ready():
 	descriptionLabel.bbcode_enabled = true
 	
 func init(skill_id: int) -> void:
-	var skill = Constants.skills[skill_id]
+	var skill = SkillManager.skills[skill_id]
 	id = skill_id
 	nameLabel.text = skill.name
 	textureRect.texture.region.position = skill.texture
@@ -28,7 +28,7 @@ func init(skill_id: int) -> void:
 	updateSkill(skill)
 
 func _on_Buy_pressed() -> void:
-	var skill = Constants.skills[id]
+	var skill = SkillManager.skills[id]
 	if skill.level < skill.maxLevel:
 		skill.level += 1
 		updateSkill(skill)
@@ -36,8 +36,7 @@ func _on_Buy_pressed() -> void:
 			buyButton.disabled = true
 
 func updateSkill(skill) -> void:
-	descriptionLabel.bbcode_text = (Constants.formatTextSkill(skill))
-	print(descriptionLabel.bbcode_text)
-	
+	descriptionLabel.bbcode_text = (SkillManager.formatTextSkill(skill))
 	level.text = "Level: " + str(skill.level) + "/" + str(skill.maxLevel)
+	goldLabel.text = str(skill.cost[skill.level])
 	

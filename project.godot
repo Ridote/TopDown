@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Constants="*res://Entities/Autoloads/Constants.gd"
 MP="*res://Entities/Autoloads/Multiplayer.gd"
+SkillManager="*res://Entities/Autoloads/SkillManager.gd"
 
 [debug]
 
@@ -130,6 +131,8 @@ ui_casting={
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Wall"
 2d_physics/layer_3="Skill"
+2d_physics/layer_4="Enemy"
+2d_physics/layer_5="EnemySkill"
 
 [rendering]
 

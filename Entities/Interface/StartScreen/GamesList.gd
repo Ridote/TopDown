@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 signal back
+signal connect
 
 var serverList
 var serverTitle
@@ -49,3 +50,12 @@ func _on_BackButton_pressed():
 		players.text = ""
 		serverTitle.text = ""
 		connectButton.visible = false
+
+func _on_Connect_pressed():
+	var meta = {
+		"Name": selectedServer.get_meta("Name"),
+		"IP": selectedServer.get_meta("IP"),
+		"Port": selectedServer.get_meta("Port"),
+		"Players": selectedServer.get_meta("Players")
+	}
+	emit_signal("connect", meta)

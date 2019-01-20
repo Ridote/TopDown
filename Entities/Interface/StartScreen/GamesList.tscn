@@ -105,4 +105,5 @@ margin_bottom = 600.0
 rect_min_size = Vector2( 0, 20 )
 color = Color( 1, 1, 1, 0 )
 
+[connection signal="pressed" from="Description/HBoxContainer/Connect" to="." method="_on_Connect_pressed"]
 [connection signal="pressed" from="Description/HBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]

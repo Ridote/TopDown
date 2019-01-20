@@ -10,3 +10,7 @@ func _on_New_Game_pressed() -> void:
 func _on_Find_Games_pressed() -> void:
 	emit_signal("find_games")
 
+
+
+func _on_Button_pressed():
+	get_tree().quit()

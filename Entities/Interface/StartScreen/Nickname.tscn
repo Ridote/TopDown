@@ -22,7 +22,7 @@ margin_right = 134.0
 margin_bottom = 14.0
 text = "Introduce your name"
 
-[node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
+[node name="Nickname" type="TextEdit" parent="VBoxContainer"]
 margin_top = 18.0
 margin_right = 134.0
 margin_bottom = 53.0

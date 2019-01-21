@@ -1,6 +1,5 @@
 #warnings-disable
 extends Node
-const fireballFactory = preload("res://Entities/Skills/Skill.tscn")
 #
 # %dmg: damage
 # %cd: reuse
@@ -8,6 +7,7 @@ const fireballFactory = preload("res://Entities/Skills/Skill.tscn")
 #
 
 func registerSkill(name : String, factory) -> void:
+	print("Registering skill:", name)
 	MP.register_type(name, factory)
 
 func _ready() -> void:
@@ -37,15 +37,15 @@ var skills = [
 		"factory":preload("res://Entities/Skills/Fireball.tscn")
 	},
 	{
-		"name": "The faggeniser",
+		"name": "Lightning",
 		"texture": Vector2(0,0),
 		"description": "The faggeniser makes you a faggen and a noob instantly dealing %dmg.\nReuse: %cd",
-		"dmg": [5,7,9,12,15,25],
-		"cd": [10, 9.5, 9, 8.5, 8, 6],
-		"cost": [20,30,40,50,60,80],
+		"dmg": [12,15,20],
+		"cd": [10, 9.5, 9],
+		"cost": [40,80,90],
 		"level":0,
-		"maxLevel":5,
-		"factory":preload("res://Entities/Skills/Skill.tscn")
+		"maxLevel":2,
+		"factory":preload("res://Entities/Skills/Lightning.tscn")
 	}
 ]
 

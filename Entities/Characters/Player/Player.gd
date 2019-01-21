@@ -12,6 +12,7 @@ var ANIMATIONS = {
 }
 
 var casting : bool = false
+var casting2 : bool = false
 puppet var slave_position : Vector2 = Vector2(0,0)
 puppet var slave_rotation : float = 0.0
 puppet var slave_anim : String = ""
@@ -47,16 +48,28 @@ func input() -> void:
 	casting = Input.is_action_pressed("ui_casting")
 	if casting:
 		attack()
+	casting2 = Input.is_action_pressed("ui_casting2")
+	if casting2:
+		light()
+		casting = true
 	
 var attacking = false
 func attack():
 	if not attacking:
 		attacking = true
 		var fireball = SkillManager.spawnSkill("Fireball", get_path())
-		fireball.init($body/SkillTarget.global_position, $body.global_position)
+		fireball.init($body.global_position)
 		yield(get_tree().create_timer(0.3), "timeout")
 		attacking = false
 
+var lightning = false
+func light():
+	if not lightning:
+		lightning = true
+		var fireball = SkillManager.spawnSkill("Lightning", get_path())
+		fireball.init($body.global_position)
+		yield(get_tree().create_timer(0.1), "timeout")
+		lightning = false
 
 func animate() -> void:
 	if casting:

@@ -10,15 +10,9 @@ func _ready():
 	else:
 		collision_layer = 16
 
-func init(targetPoint=null, position=null):
-	var direction
-	print("position", position)
-	if position:
-		global_position = position
-	if targetPoint:
-		direction = (targetPoint - position).normalized().angle()
-	else:
-		direction = (get_global_mouse_position() - global_position).angle()
+func init(position):
+	global_position = position
+	var direction = (get_global_mouse_position() - global_position).angle()
 	speed = speed.rotated(direction)
 	rotation = direction
 	$AnimationPlayer.play("fire")

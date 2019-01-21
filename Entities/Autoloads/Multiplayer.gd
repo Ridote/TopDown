@@ -176,7 +176,7 @@ func connect_to_server(_myName:String, ip:String, port:int):
 func create_server(name):
 	if not server_created:
 		server_created = true
-		mapPort(port)
+		#mapPort(port)
 		var peer = NetworkedMultiplayerENet.new()
 		var error = peer.create_server(port, maxPlayers)
 		if error:
@@ -223,10 +223,12 @@ sync func delete(n:Node):
 	
 remote func _spawn(type:String, name:String, path:String, nid:int) -> Node:
 	if not type in syncableEntities:
-		OS.alert("Trying to spawn not registered type: " + type)
+		print("Trying to spawn not registered type: " + type)
 	var entity = syncableEntities[type].preloadClass.instance()
 	entity.set_network_master(nid)
 	entity.name = name + str(nid)
+	print("path ", path)
+	print("global_position ", entity.global_position)
 	get_node(path).add_child(entity)
 	if(get_tree().is_network_server()):
 		items.append({

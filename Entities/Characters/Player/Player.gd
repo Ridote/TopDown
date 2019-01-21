@@ -31,8 +31,8 @@ func _physics_process(delta):
 			target_vel = Vector2(0,0)
 		move(delta)
 		animate()
-		rset("slave_position", $body.global_position)
-		rset("slave_rotation", $body.rotation)
+		rset_unreliable("slave_position", $body.global_position)
+		rset_unreliable("slave_rotation", $body.rotation)
 	else:
 		$body.global_position = slave_position
 		$body.rotation = slave_rotation

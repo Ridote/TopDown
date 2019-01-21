@@ -218,17 +218,12 @@ func spawn_type(type:String, name:String, path:String) -> Node:
 	rpc("_spawn", type, name, path, get_tree().get_network_unique_id())
 	return _spawn(type, name, path, get_tree().get_network_unique_id())
 	
-sync func delete(n:Node):
-	n.queue_free()
-	
 remote func _spawn(type:String, name:String, path:String, nid:int) -> Node:
 	if not type in syncableEntities:
 		print("Trying to spawn not registered type: " + type)
 	var entity = syncableEntities[type].preloadClass.instance()
 	entity.set_network_master(nid)
 	entity.name = name + str(nid)
-	print("path ", path)
-	print("global_position ", entity.global_position)
 	get_node(path).add_child(entity)
 	if(get_tree().is_network_server()):
 		items.append({

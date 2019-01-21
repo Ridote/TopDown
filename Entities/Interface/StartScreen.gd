@@ -84,7 +84,7 @@ func _on_Exit():
 	get_tree().quit()
 
 func _on_newPlayer(player):
-	var playersText = $StartScreen/VBoxContainer/VBoxContainer/GUITemplate/Lobby/PlayersOnLobby
+	var playersText = $StartScreen/VBoxContainer/GUITemplate/VBoxContainer/Lobby/PlayersOnLobby
 	playersText.text += str(player) + "\n"
 
 func _on_RequestStartGame():
@@ -109,7 +109,7 @@ func showGames():
 func showLobby():
 	backButton.visible = true
 	if(!get_tree().is_network_server()):
-		$StartScreen/VBoxContainer/GUITemplate/VBoxContainer/Lobby/StartGame.visible = false
+		$StartScreen/VBoxContainer/GUITemplate/VBoxContainer/Lobby/HBoxContainer/StartGame.visible = false
 	$StartScreen/VBoxContainer/GUITemplate/VBoxContainer/MenuGames.visible = false
 	$StartScreen/VBoxContainer/GUITemplate/VBoxContainer/MenuIni.visible = false
 	$StartScreen/VBoxContainer/GUITemplate/VBoxContainer/Lobby.visible  = true

@@ -11,6 +11,9 @@ var targetPoint = Vector2()
 puppet var slave_pos = Vector2()
 puppet var slave_rot = 0.0
 
+sync func _delete():
+	queue_free()
+
 func _ready():
 	add_to_group(Constants.G_SKILL)
 	if(is_network_master()):
@@ -39,8 +42,8 @@ func _rotate():
 
 func _process(delta):
 	if is_network_master():
-		rset("slave_pos", global_position)
-		rset("slave_rot", rotation)
+		rset_unreliable("slave_pos", global_position)
+		rset_unreliable("slave_rot", rotation)
 		
 		var collision = move_and_collide(speed.rotated(rotation) * delta)
 		if collision:
@@ -48,7 +51,7 @@ func _process(delta):
 				var collider = collision.collider
 				if collider.is_in_group(Constants.G_ENEMY):
 					collision.collider.hit(damage)
-			MP.delete(self)
+			rpc("_delete")
 	else:
 		global_position = slave_pos
 		rotation = slave_rot

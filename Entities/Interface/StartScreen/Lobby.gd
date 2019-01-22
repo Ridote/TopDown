@@ -11,8 +11,13 @@ func _on_StartGame_pressed():
 func _on_Back_pressed():
 	emit_signal("back")
 
-func init(info) -> void:
+func init(info, owner = true) -> void:
+	if owner:
+		$VBoxContainer/HBoxContainer/StartGame.visible = true
+		$VBoxContainer/HBoxContainer2/VBoxContainer/ServerName.text = Constants.PLAYER_NICKNAME + "'s Server"
+		return
 	$VBoxContainer/HBoxContainer2/VBoxContainer/ServerName.text = info.Name + "'s Server (" + str(info.IP) + ":" + str(info.Port) + ")"
-	playersLabel.text = ""
+	playersLabel.text = "    " + str(0) + ": " + Constants.PLAYER_NICKNAME + "\n"
 	for player in info.Players:
 		playersLabel.text += "    " + str(player.id) + ": " + player.name + "\n"
+	

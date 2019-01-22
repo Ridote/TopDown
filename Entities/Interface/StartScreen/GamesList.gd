@@ -12,7 +12,7 @@ var selectedServer = null
 
 func _ready():
 	
-	serverList = $Servers/CenterContainer/ServerList
+	serverList = $Servers/ScrollContainer/CenterContainer/ServerList
 	serverTitle = $Description/ScrollContainer/VBoxContainer/ServerTitle
 	players = $Description/ScrollContainer/VBoxContainer/Players
 	connectButton = $Description/HBoxContainer/Connect

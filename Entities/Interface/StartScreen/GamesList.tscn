@@ -14,13 +14,19 @@ margin_right = 398.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 
-[node name="CenterContainer" type="CenterContainer" parent="Servers"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Servers"]
 margin_right = 398.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ServerList" type="VBoxContainer" parent="Servers/CenterContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="Servers/ScrollContainer"]
+margin_right = 398.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ServerList" type="VBoxContainer" parent="Servers/ScrollContainer/CenterContainer"]
 margin_left = 199.0
 margin_top = 300.0
 margin_right = 199.0
@@ -41,13 +47,13 @@ color = Color( 1, 1, 1, 0 )
 [node name="ScrollContainer" type="ScrollContainer" parent="Description"]
 margin_top = 24.0
 margin_right = 398.0
-margin_bottom = 552.0
+margin_bottom = 576.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Description/ScrollContainer"]
 margin_right = 398.0
-margin_bottom = 528.0
+margin_bottom = 552.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -74,9 +80,9 @@ margin_bottom = 40.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Description"]
 margin_left = 322.0
-margin_top = 556.0
+margin_top = 580.0
 margin_right = 398.0
-margin_bottom = 576.0
+margin_bottom = 600.0
 size_flags_horizontal = 8
 
 [node name="Connect" type="Button" parent="Description/HBoxContainer"]
@@ -96,13 +102,6 @@ margin_left = 46.0
 margin_right = 76.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 30, 0 )
-color = Color( 1, 1, 1, 0 )
-
-[node name="ColorRect2" type="ColorRect" parent="Description"]
-margin_top = 580.0
-margin_right = 398.0
-margin_bottom = 600.0
-rect_min_size = Vector2( 0, 20 )
 color = Color( 1, 1, 1, 0 )
 
 [connection signal="pressed" from="Description/HBoxContainer/Connect" to="." method="_on_Connect_pressed"]

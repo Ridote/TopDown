@@ -6,11 +6,11 @@ const lobbyFactory = preload("res://Entities/Interface/StartScreen/Lobby.tscn")
 var activeMenu = null
 
 func _ready() -> void:
-	if($NicknameForm.connect("error", self, "_on_error")):
+	if($TopContainer/NicknameForm.connect("error", self, "_on_error")):
 		OS.alert("Error connecting NicknameForm error signal on StartingScreen", "Signaling")
-	if($NicknameForm.connect("submit_nickname", self, "_on_submittedNickname")):
+	if($TopContainer/NicknameForm.connect("submit_nickname", self, "_on_submittedNickname")):
 		OS.alert("Error connecting NicknameForm error signal on StartingScreen", "Signaling")
-	activeMenu = $NicknameForm
+	activeMenu = $TopContainer/NicknameForm
 
 func _on_error(argument : String) -> void:
 	$ErrorMessage/ScrollContainer/ErrorLabel.text = argument
@@ -18,7 +18,7 @@ func _on_error(argument : String) -> void:
 
 func _on_submittedNickname() -> void:
 	var findGamesMenu = findGamesFactory.instance()
-	add_child(findGamesMenu)
+	$TopContainer.add_child(findGamesMenu)
 	
 	if(findGamesMenu.connect("new_game", self, "_on_newGameLobby")):
 		OS.alert("Error connecting new_game signal from FindGamesForm in StartingScreen", "Signaling")
@@ -34,11 +34,11 @@ func _on_newGameLobby(lobbyInfo = null) -> void:
 	if(lobby.connect("start_game", self, "_on_startGame")):
 		OS.alert("Error connecting back signal from Lobby in StartingScreen", "Signaling")
 	activeMenu.queue_free()
-	add_child(lobby)
+	$TopContainer.add_child(lobby)
 	activeMenu = lobby
 	if lobbyInfo != null:
 		MP.connect_to_server(Constants.PLAYER_NICKNAME, lobbyInfo.IP, lobbyInfo.Port)
-		activeMenu.init(lobbyInfo)
+	activeMenu.init(lobbyInfo, lobbyInfo == null)
 		
 
 func _on_findGames() -> void:
@@ -48,7 +48,7 @@ func _on_findGames() -> void:
 	if(gamesListMenu.connect("connect", self, "_on_newGameLobby")):
 		OS.alert("Error connecting back signal from GameList in StartingScreen", "Signaling")
 	activeMenu.queue_free()
-	add_child(gamesListMenu)
+	$TopContainer.add_child(gamesListMenu)
 	activeMenu = gamesListMenu
 
 func _on_startGame() -> void:
@@ -63,3 +63,6 @@ func _on_backButton(currentMenu : String) -> void:
 		_:
 			OS.alert("Error on back signal in " + currentMenu, "Linking")
 			
+
+func _on_TopContainer_sort_children():
+	$TopContainer.move_child($TopContainer/BottomPadding, $TopContainer.get_child_count())

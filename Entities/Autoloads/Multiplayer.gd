@@ -189,7 +189,7 @@ func connect_to_server(_myName:String, ip:String, port:int):
 func create_server(name):
 	if not server_created:
 		server_created = true
-		#mapPort(port)
+		mapPort(port)
 		var peer = NetworkedMultiplayerENet.new()
 		var error = peer.create_server(port, maxPlayers)
 		if error:

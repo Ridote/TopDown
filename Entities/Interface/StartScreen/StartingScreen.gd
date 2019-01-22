@@ -52,7 +52,11 @@ func _on_findGames() -> void:
 	activeMenu = gamesListMenu
 
 func _on_startGame() -> void:
-	print("Start Game!!")
+	var map = load("res://Entities/Maps/TestMap.tscn").instance()
+	MP.register_type("Player", preload("res://Entities/Characters/Player/Player.tscn"))
+	get_tree().get_root().add_child(map)
+	map.spawn()
+	queue_free()
 
 func _on_backButton(currentMenu : String) -> void:
 	match(currentMenu):

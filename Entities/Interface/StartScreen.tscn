@@ -139,6 +139,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 7
 
 [node name="Lobby" type="VBoxContainer" parent="StartScreen/VBoxContainer/GUITemplate/VBoxContainer"]
+editor/display_folded = true
 visible = false
 margin_right = 800.0
 margin_bottom = 509.0

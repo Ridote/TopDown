@@ -11,7 +11,6 @@ var connectButton
 var selectedServer = null
 
 func _ready():
-	
 	serverList = $Servers/ScrollContainer/CenterContainer/ServerList
 	serverTitle = $Description/ScrollContainer/VBoxContainer/ServerTitle
 	players = $Description/ScrollContainer/VBoxContainer/Players

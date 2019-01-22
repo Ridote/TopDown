@@ -64,6 +64,19 @@ var items = []
 func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().set_auto_accept_quit(false)	
+	get_tree().connect("network_peer_connected", self, "_player_connected")
+	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+	get_tree().connect("connection_failed", self, "_connected_fail")
+	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	
+func _player_connected(id):
+    print("network_peer_connected")
+func _player_disconnected(id):
+    print("network_peer_disconnected")
+func _server_disconnected():
+    print("server_disconnected")
+func _connected_fail():
+    print("connection_failed")
 	
 func register_type(name, preloadClass):
 	syncableEntities[name] = {
